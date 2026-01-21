@@ -1,65 +1,18 @@
 (function () {
   "use strict";
 
+  // ✅ Logos (você passou)
   const BRANDS = [
-    { name: "Adidas", href: "/marca/adidas" },
-    { name: "Asics", href: "/marca/asics" },
-    { name: "Dior", href: "/marca/dior" },
-    { name: "Gucci", href: "/marca/gucci" },
-    { name: "Ermenegildo Zegna", href: "/marca/ermenegildo-zegna" },
-    { name: "New Balance", href: "/marca/new-balance" },
-    { name: "Nike", href: "/marca/nike" },
-    { name: "Louis Vuitton", href: "/marca/louis-vuitton" },
-    { name: "On Running", href: "/marca/on-running" },
+    { name: "Dior", href: "/marca/dior", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/3-696d51fce6d8a1.png" },
+    { name: "Adidas", href: "/marca/adidas", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/1-696d4e9141cfe1.png" },
+    { name: "On Cloud", href: "/marca/on-running", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/9-696d4e9c616ce1.png" },
+    { name: "Louis Vuitton", href: "/marca/louis-vuitton", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/6-696d4ea7373541.png" },
+    { name: "Asics", href: "/marca/asics", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/2-696d4eb2432091.png" },
+    { name: "New Balance", href: "/marca/new-balance", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/7-696d4ebce74bb1.png" },
+    { name: "Nike", href: "/marca/nike", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/8-696d4ec811b281.png" },
+    { name: "Zegna", href: "/marca/ermenegildo-zegna", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/4-696d4ed2b78831.png" },
+    { name: "Gucci", href: "/marca/gucci", img: "https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/5-696d4ede9544f1.png" },
   ];
-
-  function injectStyleOnce() {
-    if (document.getElementById("v1-brands-style")) return;
-    const st = document.createElement("style");
-    st.id = "v1-brands-style";
-    st.textContent = `
-      /* ====== V1 BRANDS (scoped) ====== */
-      .v1-brands{max-width:1200px;margin:26px auto 34px;padding:0 16px}
-      .v1-brands .v1-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-      .v1-brands .v1-title{
-        font-family: Helvetica, Arial, sans-serif;
-        font-size:14px; letter-spacing:3px; text-transform:uppercase; color:#111;
-        opacity:.9;
-      }
-
-      .v1-brands .v1-track{
-        display:flex; gap:12px; overflow:auto; padding:8px 2px 12px;
-        scroll-snap-type:x mandatory;
-        -webkit-overflow-scrolling: touch;
-      }
-      .v1-brands .v1-track::-webkit-scrollbar{height:8px}
-      .v1-brands .v1-track::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:999px}
-      .v1-brands .v1-card{
-        flex:0 0 auto; min-width:160px;
-        padding:14px 16px; border-radius:14px;
-        border:1px solid rgba(0,0,0,.10);
-        background: rgba(255,255,255,.65);
-        backdrop-filter: blur(10px);
-        scroll-snap-align: start;
-        text-decoration:none;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, opacity .25s ease;
-        position:relative;
-      }
-      .v1-brands .v1-name{
-        font-family: Helvetica, Arial, sans-serif;
-        font-size:14px; letter-spacing:1px; color:#111;
-        white-space:nowrap;
-      }
-      /* ✨ Hover effect */
-      .v1-brands .v1-card:hover{
-        transform: translateY(-2px) scale(1.03);
-        border-color: rgba(0,0,0,.22);
-        box-shadow: 0 10px 26px rgba(0,0,0,.10);
-      }
-      .v1-brands .v1-card:active{transform: scale(.99)}
-    `;
-    document.head.appendChild(st);
-  }
 
   function isHome() {
     const canonical = document.querySelector('link[rel="canonical"]');
@@ -72,6 +25,83 @@
     return p === "" || p === "/" || p === "/home";
   }
 
+  function injectStyleOnce() {
+    if (document.getElementById("v1-brands-style")) return;
+    const st = document.createElement("style");
+    st.id = "v1-brands-style";
+    st.textContent = `
+      .v1-brands{max-width:1200px;margin:28px auto;padding:0 16px}
+      .v1-brands .v1-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+      .v1-brands .v1-title{
+        font-family: Helvetica, Arial, sans-serif;
+        font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#111;opacity:.9;
+      }
+      .v1-brands .v1-track{
+        display:flex;gap:14px;overflow:auto;padding:10px 2px 14px;
+        scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+      }
+      .v1-brands .v1-track::-webkit-scrollbar{height:8px}
+      .v1-brands .v1-track::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:999px}
+
+      .v1-brands .v1-card{
+        flex:0 0 auto; min-width:170px;
+        border-radius:16px;
+        border:1px solid rgba(0,0,0,.10);
+        background: rgba(255,255,255,.70);
+        backdrop-filter: blur(10px);
+        scroll-snap-align: start;
+        text-decoration:none;
+        padding:14px 16px;
+        display:flex;align-items:center;justify-content:center;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      }
+      .v1-brands .v1-logo{
+        width:120px; height:46px; object-fit:contain; display:block;
+        filter: grayscale(1) contrast(1.05);
+        opacity:.92;
+        transition: transform .25s ease, filter .25s ease, opacity .25s ease;
+      }
+
+      /* ✨ Hover */
+      .v1-brands .v1-card:hover{
+        transform: translateY(-2px) scale(1.03);
+        border-color: rgba(0,0,0,.22);
+        box-shadow: 0 12px 28px rgba(0,0,0,.10);
+      }
+      .v1-brands .v1-card:hover .v1-logo{
+        transform: scale(1.06);
+        filter: grayscale(0) contrast(1.08);
+        opacity:1;
+      }
+      .v1-brands .v1-card:active{transform:scale(.99)}
+    `;
+    document.head.appendChild(st);
+  }
+
+  function removeWrongInstances() {
+    document.querySelectorAll(".v1-brands").forEach((n) => n.remove());
+  }
+
+  // 👉 achar Newsletter (por texto) e inserir logo acima
+  function findNewsletterAnchor() {
+    const nodes = Array.from(document.querySelectorAll("section,div,footer")).slice(0, 700);
+
+    for (const el of nodes) {
+      const txt = (el.textContent || "").toLowerCase();
+      if (txt.includes("newsletter")) {
+        return el.closest("section,div,footer") || el;
+      }
+    }
+
+    // fallback: tenta achar campo de email no rodapé
+    const emailInput = document.querySelector('footer input[type="email"], input[type="email"]');
+    if (emailInput) {
+      return emailInput.closest("section,div,footer") || emailInput;
+    }
+
+    return null;
+  }
+
   function buildNode() {
     const sec = document.createElement("section");
     sec.className = "v1-brands";
@@ -80,11 +110,13 @@
         <div class="v1-title">Marcas</div>
       </div>
       <div class="v1-track" aria-label="Carrossel de marcas">
-        ${BRANDS.map(b => `
+        ${BRANDS.map(
+          (b) => `
           <a class="v1-card" href="${b.href}" aria-label="${b.name}">
-            <div class="v1-name">${b.name}</div>
+            <img class="v1-logo" src="${b.img}" alt="${b.name}" loading="lazy">
           </a>
-        `).join("")}
+        `
+        ).join("")}
       </div>
     `;
     return sec;
@@ -92,21 +124,15 @@
 
   function inject() {
     if (!isHome()) return false;
-    if (document.querySelector(".v1-brands")) return true;
 
+    removeWrongInstances();
     injectStyleOnce();
 
-    // Preferência: logo abaixo dos 3 banners (se existirem)
-    const banners = document.querySelector(".v1-home-banners");
-    if (banners && banners.parentNode) {
-      banners.parentNode.insertBefore(buildNode(), banners.nextSibling);
-      return true;
-    }
+    const anchor = findNewsletterAnchor();
+    if (!anchor || !anchor.parentNode) return false;
 
-    // Fallback: topo do main
-    const main = document.querySelector("main") || document.querySelector("#content");
-    if (!main) return false;
-    main.insertBefore(buildNode(), main.firstChild);
+    // insere logo acima da Newsletter
+    anchor.insertAdjacentElement("beforebegin", buildNode());
     return true;
   }
 
@@ -114,7 +140,7 @@
     let tries = 0;
     const timer = setInterval(() => {
       tries++;
-      if (inject() || tries > 40) clearInterval(timer);
+      if (inject() || tries > 80) clearInterval(timer);
     }, 250);
 
     try {
@@ -129,3 +155,4 @@
     start();
   }
 })();
+
