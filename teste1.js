@@ -1,3 +1,4 @@
+<script>
 (function () {
   "use strict";
 
@@ -128,3 +129,4 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();
+</script>
