@@ -257,5 +257,5 @@
   }, { once: true });
 
 })();
-<script>
+</script>
   
