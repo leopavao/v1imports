@@ -1,3 +1,4 @@
+<script>
 (function () {
   "use strict";
 
@@ -20,13 +21,6 @@
     { name:"On Running", href:"/marca/on-running", logo:"https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/9-696d4e9c616ce1.png" }
   ];
 
-  // 3 banners de categoria
-  var BANNERS = [
-    { href:"/corrida/", img:"https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/3-695ffaa3408fb1.png", alt:"Corrida" },
-    { href:"/casual/", img:"https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/1-695872294383c1.png", alt:"Casual" },
-    { href:"/tenis-luxo/", img:"https://cdn.sistemawbuy.com.br/arquivos/753edafbb4a85239e8b43a21ea5ee7b7/banners/2-695871db0a81f1.png", alt:"Luxo" }
-  ];
-
   function qs(sel, root){ return (root||document).querySelector(sel); }
   function qsa(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 
@@ -38,7 +32,7 @@
     if (qs("#page_home")) return true;
     if (qs("#slider, .block-slider")) return true;
 
-    // Canonical no publicado costuma ser o melhor “termômetro” de HOME
+    // Canonical
     var canon = qs("link[rel='canonical']");
     if (canon && canon.href){
       try{
@@ -50,13 +44,11 @@
       }catch(e){}
     }
 
-    // fallback por body/class/id comum
     var b = document.body;
     var cls = (b && b.className) ? (""+b.className).toLowerCase() : "";
     var id = (b && b.id) ? (""+b.id).toLowerCase() : "";
     if (cls.indexOf("home") >= 0 || id.indexOf("home") >= 0) return true;
 
-    // alguns temas marcam a home em data-attrs
     if (b){
       var dp = (b.getAttribute("data-page") || "").toLowerCase();
       var tpl = (b.getAttribute("data-template") || "").toLowerCase();
@@ -66,7 +58,6 @@
     if (p === "/" || p === "") return true;
     if (p === "/index.php" || p === "/home" || p === "/home/" || p === "/loja/" || p === "/loja") return true;
 
-    // urls com querystring às vezes deixam pathname estranho no WBuy
     if ((location && location.search) && (p === "/index.php" || p === "/")) return true;
 
     return false;
@@ -122,7 +113,7 @@
   }
 
   /* =========================================
-     HOME INSERTS
+     HOME INSERTS (usado pelo carrossel de marcas)
   ========================================= */
   function getHomeAnchor(){
     if (!isHomeStrict()) return null;
@@ -154,45 +145,24 @@
     return wrap;
   }
 
-  function buildBannersNode(){
-    var section = document.createElement("section");
-    section.className = "v1-banners3";
-    section.setAttribute("aria-label", "Categorias V1 Imports");
-
-    var central = document.createElement("div");
-    central.className = "central";
-
-    var grid = document.createElement("div");
-    grid.className = "v1-grid";
-
-    for (var i=0; i<BANNERS.length; i++){
-      var b = BANNERS[i];
-      var a = document.createElement("a");
-      a.className = "v1-card";
-      a.href = b.href;
-      a.setAttribute("aria-label", b.alt);
-
-      var img = document.createElement("img");
-      img.src = b.img;
-      img.alt = b.alt;
-      img.loading = "lazy";
-
-      a.appendChild(img);
-      grid.appendChild(a);
-    }
-
-    central.appendChild(grid);
-    section.appendChild(central);
-    return section;
-  }
-
-  function injectBanners(){
-    if (!isHomeStrict()) return;
-    var anchor = getHomeAnchor();
-    if (!anchor) return;
-    if (qs(".v1-banners3", anchor)) return;
-
-    anchor.appendChild(buildBannersNode());
+  /* =========================================
+     CSS do carrossel (blindado)
+  ========================================= */
+  function injectCarouselStyle(){
+    if (qs("#v1-carousel-style")) return;
+    var st = document.createElement("style");
+    st.id = "v1-carousel-style";
+    st.type = "text/css";
+    st.textContent = [
+      ".v1-brands-carousel{padding:10px 12px 18px;}",
+      ".v1-brands-shell{max-width:1200px;margin:0 auto;overflow:hidden;padding:14px 0;border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);}",
+      ".v1-track{display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;align-items:center !important;gap:14px !important;white-space:nowrap !important;}",
+      ".v1-brand{display:inline-flex !important;flex:0 0 180px !important;width:180px !important;max-width:180px !important;align-items:center !important;justify-content:center !important;padding:10px 14px !important;border:1px solid rgba(0,0,0,0.10);background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);text-decoration:none !important;border-radius:14px;}",
+      ".v1-brand-media{width:180px !important;height:40px !important;display:flex !important;align-items:center !important;justify-content:center !important;overflow:hidden !important;}",
+      ".v1-brand-logo{max-width:160px !important;max-height:40px !important;width:auto !important;height:auto !important;display:block !important;}",
+      ".v1-brand-fallback{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#111 !important;}"
+    ].join("");
+    document.head.appendChild(st);
   }
 
   function injectBrandsCarousel(){
@@ -223,49 +193,6 @@
         '</a>'
       );
     }).join("");
-  }
-
-  /* =========================================
-     CSS do carrossel (blindado)
-  ========================================= */
-  function injectCarouselStyle(){
-    if (qs("#v1-carousel-style")) return;
-    var st = document.createElement("style");
-    st.id = "v1-carousel-style";
-    st.type = "text/css";
-    st.textContent = [
-      ".v1-brands-carousel{padding:10px 12px 18px;}",
-      ".v1-brands-shell{max-width:1200px;margin:0 auto;overflow:hidden;padding:14px 0;border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);}",
-      ".v1-track{display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;align-items:center !important;gap:14px !important;white-space:nowrap !important;}",
-      ".v1-brand{display:inline-flex !important;flex:0 0 180px !important;width:180px !important;max-width:180px !important;align-items:center !important;justify-content:center !important;padding:10px 14px !important;border:1px solid rgba(0,0,0,0.10);background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);text-decoration:none !important;border-radius:14px;}",
-      ".v1-brand-media{width:180px !important;height:40px !important;display:flex !important;align-items:center !important;justify-content:center !important;overflow:hidden !important;}",
-      ".v1-brand-logo{max-width:160px !important;max-height:40px !important;width:auto !important;height:auto !important;display:block !important;}",
-      ".v1-brand-fallback{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#111 !important;}"
-    ].join("");
-    document.head.appendChild(st);
-  }
-
-  /* =========================================
-     Esconder 2 categorias default (fallback via JS)
-     (mantém o CSS também; isso aqui é só uma “rede extra”)
-  ========================================= */
-  function hideDefaultHomeCategories(){
-    if (!isHomeStrict()) return;
-
-    var candidates = qsa(
-      ".categorias-home, .home-categorias, .block-categorias, .banner-categorias, .categorias, [class*='categoria'][class*='home']"
-    );
-
-    candidates.forEach(function(el){
-      if (el.__v1_hidden) return;
-
-      // só esconda se parecer um bloco de categorias com poucos links
-      var links = el.querySelectorAll("a");
-      if (links && links.length > 0 && links.length <= 4){
-        el.style.display = "none";
-        el.__v1_hidden = true;
-      }
-    });
   }
 
   /* =========================================
@@ -350,8 +277,6 @@
         var headerRect = header.getBoundingClientRect();
         var inputRect = input.getBoundingClientRect();
 
-        // Busca: menor (aprox. metade do que estava), sem ocupar a tela toda
-        // Mantém responsivo no mobile
         var width = Math.min(380, window.innerWidth - 32);
         width = Math.max(280, width);
         var idealLeft = (inputRect.left + inputRect.right)/2 - width/2;
@@ -400,8 +325,6 @@
 
     if (isHomeStrict()){
       injectCarouselStyle();
-      hideDefaultHomeCategories();
-      injectBanners();
       injectBrandsCarousel();
     }
 
@@ -435,3 +358,4 @@
     start();
   }
 })();
+</script>
